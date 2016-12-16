@@ -1,6 +1,6 @@
 'use strict';
 
-var calculateCacheKeyForTree = require('.');
+var calculateCacheKeyForTree = require('./index');
 var chai = require('chai');
 var expect = chai.expect;
 
@@ -46,5 +46,29 @@ describe('calculateCacheKeyForTree', function() {
     var second = calculateCacheKeyForTree('app', addon);
 
     expect(first).not.to.equal(second);
+  });
+
+  it('should allow additional custom values to be passed', function() {
+    var addon = {
+      root: 'hoy',
+      pkg: { some: 'parsed', value: { goes: 'here' }}
+    };
+
+    var first = calculateCacheKeyForTree('addon', addon);
+    var second = calculateCacheKeyForTree('addon', addon, ['foo']);
+
+    expect(first).not.to.equal(second);
+  });
+
+  it('cache key parts are stable sorted', function() {
+    var addon = {
+      root: 'hoy',
+      pkg: { some: 'parsed', value: { goes: 'here' }}
+    };
+
+    var first = calculateCacheKeyForTree('addon', addon, [ { foo: 'bar', baz: 'derp' }]);
+    var second = calculateCacheKeyForTree('addon', addon, [ { baz: 'derp', foo: 'bar' }]);
+
+    expect(first).to.equal(second);
   });
 });
