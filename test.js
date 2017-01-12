@@ -1,6 +1,7 @@
 'use strict';
 
 var calculateCacheKeyForTree = require('./index');
+var cacheKeyForStableTree = calculateCacheKeyForTree.cacheKeyForStableTree;
 var chai = require('chai');
 var expect = chai.expect;
 
@@ -70,5 +71,34 @@ describe('calculateCacheKeyForTree', function() {
     var second = calculateCacheKeyForTree('addon', addon, [ { baz: 'derp', foo: 'bar' }]);
 
     expect(first).to.equal(second);
+  });
+});
+
+describe('cacheKeyForStableTree', function() {
+  it('should pass the tree type to calculateCacheKeyForTree', function() {
+    let addon = {
+      cacheKeyForTree: cacheKeyForStableTree
+    };
+    let firstKey = addon.cacheKeyForTree('foo');
+    let secondKey = addon.cacheKeyForTree('bar');
+    let thirdKey = addon.cacheKeyForTree('foo');
+
+    expect(firstKey).not.to.equal(secondKey);
+    expect(firstKey).to.equal(thirdKey);
+  });
+
+  it('should use the context as the addon argument to calculateCacheKeyForTree', function() {
+    let addon = {
+      name: 'derp',
+      root: 'hoy',
+      pkg: { some: 'other', value: { goes: 'elsewhere' }},
+      cacheKeyForTree: cacheKeyForStableTree
+    };
+    let firstKey = addon.cacheKeyForTree('foo');
+
+    addon.name = 'herp';
+    let secondKey = addon.cacheKeyForTree('foo');
+
+    expect(firstKey).not.to.equal(secondKey);
   });
 });
