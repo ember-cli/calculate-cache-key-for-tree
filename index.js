@@ -7,3 +7,4 @@
   (since both addon and ember-cli could use `^1.0.0` and float independently).
 */
 module.exports = require('./lib/calculate-cache-key-for-tree');
+module.exports.cacheKeyForStableTree = require('./lib/cache-key-for-stable-tree');
