@@ -76,28 +76,28 @@ describe('calculateCacheKeyForTree', function() {
 
 describe('cacheKeyForStableTree', function() {
   it('should pass the tree type to calculateCacheKeyForTree', function() {
-    let addon = {
+    var addon = {
       cacheKeyForTree: cacheKeyForStableTree
     };
-    let firstKey = addon.cacheKeyForTree('foo');
-    let secondKey = addon.cacheKeyForTree('bar');
-    let thirdKey = addon.cacheKeyForTree('foo');
+    var firstKey = addon.cacheKeyForTree('foo');
+    var secondKey = addon.cacheKeyForTree('bar');
+    var thirdKey = addon.cacheKeyForTree('foo');
 
     expect(firstKey).not.to.equal(secondKey);
     expect(firstKey).to.equal(thirdKey);
   });
 
   it('should use the context as the addon argument to calculateCacheKeyForTree', function() {
-    let addon = {
+    var addon = {
       name: 'derp',
       root: 'hoy',
       pkg: { some: 'other', value: { goes: 'elsewhere' }},
       cacheKeyForTree: cacheKeyForStableTree
     };
-    let firstKey = addon.cacheKeyForTree('foo');
+    var firstKey = addon.cacheKeyForTree('foo');
 
     addon.name = 'herp';
-    let secondKey = addon.cacheKeyForTree('foo');
+    var secondKey = addon.cacheKeyForTree('foo');
 
     expect(firstKey).not.to.equal(secondKey);
   });
