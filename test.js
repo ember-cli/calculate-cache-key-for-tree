@@ -9,7 +9,7 @@ describe('calculateCacheKeyForTree', function() {
   it('should return same value for same input', function() {
     var addon = {
       root: 'hoy',
-      pkg: { some: 'parsed', value: { goes: 'here' }}
+      pkg: { name: 'foo', dependencies: { bar: '1.2.3' } }
     };
 
     var first = calculateCacheKeyForTree('app', addon);
@@ -22,13 +22,13 @@ describe('calculateCacheKeyForTree', function() {
     var firstAddon = {
       name: 'derp',
       root: 'hoy',
-      pkg: { some: 'other', value: { goes: 'elsewhere' }}
+      pkg: { name: 'baz', dependencies: { bar: '2.0.1' } }
     };
 
     var secondAddon = {
       name: 'huzzah',
       root: 'hoy',
-      pkg: { some: 'parsed', value: { goes: 'here' }}
+      pkg: { name: 'foo', dependencies: { bar: '1.2.3' } }
     };
 
     var first = calculateCacheKeyForTree('app', firstAddon);
@@ -40,7 +40,7 @@ describe('calculateCacheKeyForTree', function() {
   it('should not return same value for same addon with different tree type', function() {
     var addon = {
       root: 'hoy',
-      pkg: { some: 'parsed', value: { goes: 'here' }}
+      pkg: { name: 'foo', dependencies: { bar: '1.2.3' } }
     };
 
     var first = calculateCacheKeyForTree('addon', addon);
@@ -52,7 +52,7 @@ describe('calculateCacheKeyForTree', function() {
   it('should allow additional custom values to be passed', function() {
     var addon = {
       root: 'hoy',
-      pkg: { some: 'parsed', value: { goes: 'here' }}
+      pkg: { name: 'foo', dependencies: { bar: '1.2.3' } }
     };
 
     var first = calculateCacheKeyForTree('addon', addon);
@@ -64,7 +64,7 @@ describe('calculateCacheKeyForTree', function() {
   it('cache key parts are stable sorted', function() {
     var addon = {
       root: 'hoy',
-      pkg: { some: 'parsed', value: { goes: 'here' }}
+      pkg: { name: 'foo', dependencies: { bar: '1.2.3' } }
     };
 
     var first = calculateCacheKeyForTree('addon', addon, [ { foo: 'bar', baz: 'derp' }]);
@@ -91,7 +91,7 @@ describe('cacheKeyForStableTree', function() {
     let addon = {
       name: 'derp',
       root: 'hoy',
-      pkg: { some: 'other', value: { goes: 'elsewhere' }},
+      pkg: { name: 'baz', dependencies: { bar: '2.0.1' } },
       cacheKeyForTree: cacheKeyForStableTree
     };
     let firstKey = addon.cacheKeyForTree('foo');
