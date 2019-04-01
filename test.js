@@ -18,6 +18,44 @@ describe('calculateCacheKeyForTree', function() {
     expect(first).to.equal(second);
   });
 
+  it('should return same value for different instances but same package.json content', function() {
+    var firstAddon = {
+      name: 'derp',
+      root: 'hoy',
+      pkg: { name: 'foo', dependencies: { bar: '2.0.1' } }
+    };
+
+    var secondAddon = {
+      name: 'derp',
+      root: 'hoy',
+      pkg: { name: 'foo', dependencies: { bar: '2.0.1' } }
+    };
+
+    var first = calculateCacheKeyForTree('app', firstAddon);
+    var second = calculateCacheKeyForTree('app', secondAddon);
+
+    expect(first).to.equal(second);
+  });
+
+  it('should return different value for addons with custom non-underscored keys in package.json', function() {
+    var firstAddon = {
+      name: 'huzzah',
+      root: 'hoy',
+      pkg: { name: 'foo', specialThing: 'quux', dependencies: { bar: '2.0.1' } }
+    };
+
+    var secondAddon = {
+      name: 'huzzah',
+      root: 'hoy',
+      pkg: { name: 'foo', specialThing: 'qux', dependencies: { bar: '2.0.1' } }
+    };
+
+    var first = calculateCacheKeyForTree('app', firstAddon);
+    var second = calculateCacheKeyForTree('app', secondAddon);
+
+    expect(first).to.not.equal(second);
+  });
+
   it('should return different value for different addons', function() {
     var firstAddon = {
       name: 'derp',
